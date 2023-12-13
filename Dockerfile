@@ -9,7 +9,7 @@ ADD --chown=sagadmin:sagadmin wpm ./wpm /opt/softwareag/wpm
 RUN chmod +x /opt/softwareag/wpm/bin/wpm.sh
 ENV PATH=/opt/softwareag/wpm/bin:$PATH
 
-RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJwa2ctbWdyLWV4dC11c2VyIiwiYXVkIjoicGFja2FnZS1tYW5hZ2VyIiwiaXNzIjoiU29mdHdhcmVBRyIsIm51bURheXMiOiI5MCIsImlkIjoic2Fnc3RzQHNvZnR3YXJlYWcuY29tIiwibGFiZWwiOiJUb21hc1Rva2VuMiIsImV4cCI6MTcxMDI2MDkxN30.qXGI00i7-0mvbcLhAImgs-hJCu8ObvYsYxXg3WyqyUvt84KqTtJRsHV5E6Zhhv69kXhfM2JH0EKc1ct3NOpQsc5RogDungx8dDlv7VK_JaiwvAY7WcR10bRVFleRZCFWDG5svnxRlRgdtaewJGb3njoT2b3OotQ55go3pWSao5Ejv0sSt2NOpgOd35dpvdGGpJA07LHEx_TAum0_r9AzkZ11QSgLW2nLynPqs-um0TZWq4HD3UL9xX88AqWC_-UIW4o56BEoZ9QusxaBp5kywP8Rs0pFcagjUYKS30yM5Tz3akBtw5OLrT0la6CI3r0sM4I8u_ypParNYfNetV-tcA WmJDBCAdapter
-RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJwa2ctbWdyLWV4dC11c2VyIiwiYXVkIjoicGFja2FnZS1tYW5hZ2VyIiwiaXNzIjoiU29mdHdhcmVBRyIsIm51bURheXMiOiI5MCIsImlkIjoic2Fnc3RzQHNvZnR3YXJlYWcuY29tIiwibGFiZWwiOiJUb21hc1Rva2VuMiIsImV4cCI6MTcxMDI2MDkxN30.qXGI00i7-0mvbcLhAImgs-hJCu8ObvYsYxXg3WyqyUvt84KqTtJRsHV5E6Zhhv69kXhfM2JH0EKc1ct3NOpQsc5RogDungx8dDlv7VK_JaiwvAY7WcR10bRVFleRZCFWDG5svnxRlRgdtaewJGb3njoT2b3OotQ55go3pWSao5Ejv0sSt2NOpgOd35dpvdGGpJA07LHEx_TAum0_r9AzkZ11QSgLW2nLynPqs-um0TZWq4HD3UL9xX88AqWC_-UIW4o56BEoZ9QusxaBp5kywP8Rs0pFcagjUYKS30yM5Tz3akBtw5OLrT0la6CI3r0sM4I8u_ypParNYfNetV-tcA WmSAP
+RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j ${WPM_CRED} WmJDBCAdapter
+RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j ${WPM_CRED} WmSAP
 
 WORKDIR /
