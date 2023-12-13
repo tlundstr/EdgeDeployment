@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: application-properties-is
-  namespace: "api-first-workshop"
+  namespace: "edge-deployment"
 data:
   application.properties: |
     healthindicators.Adapters.enabled=true
@@ -29,7 +29,7 @@ kind: "Deployment"
 apiVersion: "apps/v1"
 metadata:
   name: "${CONTAINER}"
-  namespace: "api-first-workshop"
+  namespace: "edge-deployment"
   labels:
     app: "${CONTAINER}"
 spec:
@@ -61,20 +61,12 @@ spec:
           env:
             - name: "SAG_IS_CONFIG_PROPERTIES"
               value: "/opt/swagmsr/config/application.properties"
-#        - name: "api-micro-gateway"
-#          image: "softwareag/microgateway-trial:10.11"
-#          ports:
-#            - containerPort: 9090
-#              protocol: "TCP"
-#          env:
-#            - name: "mcgw_api_gateway_url"
-#              value: "http://apigateway.swag-infra:5555"
-#            - name: "mcgw_api_gateway_user"
-#              value: "Administrator"
-#            - name: "mcgw_api_gateway_password"
-#              value: "manage"
-#            - name: "mcgw_downloads_apis"
-#              value: "${CONTAINER}"
+            - name: SAG_IS_CLOUD_REGISTER_URL
+              value: https://wmintanywhere.int-aw-au.webmethods.io
+            - name: SAG_IS_EDGE_CLOUD_ALIAS
+              value: EdgeRuntime_SE_TS_Edge
+            - name: SAG_IS_CLOUD_REGISTER_TOKEN
+              value: 8bc81296e10741a39ee87143a053cbb8cc2bd036aefd430487af21c882da7898
       volumes:
         - name: config-volume
           configMap:

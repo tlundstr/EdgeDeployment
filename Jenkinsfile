@@ -54,7 +54,7 @@ spec:
 
 	environment {
 		PACKAGE = "ServiceMonitor"
-		NAMESPACE = "api-first-workshop"
+		NAMESPACE = "edge-deployement"
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
 		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
@@ -72,8 +72,7 @@ spec:
 						build/test/reports'
 					sh 'chmod -R go+w build/test;'
 					sh 'cd build/container; \
-					    cp -r ${WORKSPACE}/${PACKAGE}/Dockerfile .; \'
-
+					    cp -r ${WORKSPACE}/${PACKAGE}/Dockerfile .;'
 				}
 			}
 		}
