@@ -1,10 +1,4 @@
-@NonCPS
-def jsonParse(def json) {
-	new groovy.json.JsonSlurperClassic().parseText(json)
-}
-
 pipeline {
-
 	agent {
 		kubernetes {
     	label 'docker-builder'
@@ -47,21 +41,24 @@ spec:
 		}
 	}
 
+		
 	parameters{
 		string(name: 'REGISTRY', defaultValue: 'registry.localhost', description: 'Endpoint of the docker registry')
-		string(name: 'HOST', description: 'Base hostname of your cloud machine for the ingress')
+		string(name: 'HOST', defaultValue: 'edge.localhost', description: 'Base hostname of your cloud machine for the ingress')
 	}
 
 	environment {
-		PACKAGE = "ServiceMonitor"
-		NAMESPACE = "edge-deployement"
+		PACKAGE = "*"
+		WPM = "WPM"
+		NAMESPACE = "edge-deployment"
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
-		CONTAINER = "demo-edge-runtime"
+		CONTAINER = "edge-msr"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
     }
 
     stages {
-        stage('Prepare'){
+
+		stage('Prepare'){
             steps {
 				dir("${PACKAGE}") {
 					sh 'mkdir build \
@@ -70,15 +67,16 @@ spec:
 						dist \
 						build/test \
 						build/test/reports'
-					sh 'chmod -R go+w build/test;'
+					sh 'chmod -R go+w build/test' 
 					sh 'cd build/container; \
-					    cp -r ${WORKSPACE}/${PACKAGE}/Dockerfile .;'
+					    cp -r ${WORKSPACE}/Dockerfile .; \
+					    mkdir ./packages;'
 				}
 			}
 		}
 
-		stage('Build') {
-			steps {
+        stage('Build'){
+            steps {
 				container(name: 'dind', shell: '/bin/sh') {
 					sh '''#!/bin/sh
             			cd ${PACKAGE}
@@ -86,7 +84,7 @@ spec:
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
-							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE}")
+							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg WPM=${WPM}")
 
 							/* Push the container to the custom Registry */
 							customImage.push()
@@ -95,26 +93,25 @@ spec:
 				}
 			}
 		}
-
+		
 		stage('Deploy-Container'){
             steps {
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						cat ${PACKAGE}/deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | kubectl apply -f -'''
+						cat assets/IS/deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 				
 						script {
 							try {
 								sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
 							} catch (exc) {
 								echo 'Service does not exist yet'
-								sh '''cat ${PACKAGE}/deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								sh '''cat assets/IS/deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 							}
 						}
 					}
 				}
             }
 		}
-
-	}
+    }
 }
