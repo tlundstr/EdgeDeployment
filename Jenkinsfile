@@ -43,6 +43,10 @@ spec:
 
 		
 	parameters{
+		credentials(credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
+			defaultValue: '', description: 'GitHub credentials ', name: 'GITHUB_CREDENTIALS', required: true)
+		credentials(credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', 
+			defaultValue: '', description: 'WPM Securiy Token', name: 'WPM_CREDENTIALS', required: true)
 		string(name: 'REGISTRY', defaultValue: 'registry.localhost', description: 'Endpoint of the docker registry')
 		string(name: 'HOST', defaultValue: 'edge.localhost', description: 'Base hostname of your cloud machine for the ingress')
         string(name: 'EDGE_VERSION', defaultValue: '10.16.5', description: 'Base version for the build')
@@ -56,6 +60,8 @@ spec:
 		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
 		EDGE_VERSION = "${params.EDGE_VERSION}"
+		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
+		WPM_CRED = credentials('WPM_CREDENTIALS')
     }
 
     stages {
@@ -87,7 +93,7 @@ spec:
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
-							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM=${WPM}")
+							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PWD=${GITHUB_CREDS_PWD} --build-arg WPM_CRED=${WPM_CRED}")
 
 							/* Push the container to the custom Registry */
 							customImage.push()
