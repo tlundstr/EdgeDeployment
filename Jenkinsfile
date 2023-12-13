@@ -72,7 +72,6 @@ spec:
 					sh 'chmod -R go+w build/test' 
 					sh 'cd build/container; \
 					    cp -r ${WORKSPACE}/Dockerfile .; \
-						cp -r ${WORKSPACE}/wpm .; \
 					    mkdir ./packages;'
 				}
 			}
