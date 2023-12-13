@@ -1,4 +1,4 @@
-FROM softwareag/webmethods-microservicesruntime:10.15.0.7
+FROM sagcr.azurecr.io/webmethods-edge-runtime:10.16.5
 
 MAINTAINER SoftwareAG
 
