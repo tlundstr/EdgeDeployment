@@ -52,7 +52,7 @@ spec:
 		WPM = "WPM"
 		NAMESPACE = "edge-deployment"
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
-		CONTAINER = "edge-msr"
+		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
     }
 
@@ -99,14 +99,14 @@ spec:
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						cat assets/IS/deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+						cat deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 				
 						script {
 							try {
 								sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
 							} catch (exc) {
 								echo 'Service does not exist yet'
-								sh '''cat assets/IS/deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								sh '''cat deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 							}
 						}
 					}

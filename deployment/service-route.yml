@@ -7,10 +7,6 @@ metadata:
   namespace: ${NAMESPACE}
 spec: 
   ports:
-    - name: micro-gateway-tcp
-      port: 4485
-      protocol: TCP
-      targetPort: 4485
     - name: api-container-tcp
       port: 5555
       protocol: TCP
