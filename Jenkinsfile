@@ -45,7 +45,7 @@ spec:
 	parameters{
 		string(name: 'REGISTRY', defaultValue: 'registry.localhost', description: 'Endpoint of the docker registry')
 		string(name: 'HOST', defaultValue: 'edge.localhost', description: 'Base hostname of your cloud machine for the ingress')
-        string(name: 'BASEIMAGE', defaultValue: 'sagcr.azurecr.io/webmethods-edge-runtime:10.16.5', description: 'Base image for the build')
+        string(name: 'EDGE_VERSION', defaultValue: '10.16.5', description: 'Base version for the build')
 	}
 
 	environment {
@@ -55,7 +55,7 @@ spec:
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
 		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
-		BASEIMAGE = "sagcr.azurecr.io/webmethods-edge-runtime:11.0"
+		EDGE_VERSION = "10.16.5"
     }
 
     stages {
@@ -86,7 +86,7 @@ spec:
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
-							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg BASEIMAGE=${BASEIMAGE} --build-arg WPM=${WPM}")
+							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM=${WPM}")
 
 							/* Push the container to the custom Registry */
 							customImage.push()

@@ -1,4 +1,5 @@
-FROM sagcr.azurecr.io/webmethods-edge-runtime:11.0
+ARG EDGE_VERSION=11.0
+FROM sagcr.azurecr.io/webmethods-edge-runtime:${EDGE_VERSION} AS base
 
 MAINTAINER SoftwareAG
 
