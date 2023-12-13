@@ -1,4 +1,6 @@
 ARG EDGE_VERSION=11.0
+ARG WPM_CRED=
+
 FROM sagcr.azurecr.io/webmethods-edge-runtime:${EDGE_VERSION}
 
 WORKDIR /opt/softwareag/wpm
