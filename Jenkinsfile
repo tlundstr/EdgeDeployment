@@ -55,6 +55,7 @@ spec:
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
 		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
+		BASEIMAGE = "${params.BASEIMAGE}"
     }
 
     stages {
@@ -100,8 +101,7 @@ spec:
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						cat deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | sed --expression='s/${BASEIMAGE}/'$BASEIMAGE'/g' | kubectl apply -f -'''
-				
+						cat deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 						script {
 							try {
 								sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
