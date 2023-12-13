@@ -93,7 +93,7 @@ spec:
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
-							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED}")
+							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJwa2ctbWdyLWV4dC11c2VyIiwiYXVkIjoicGFja2FnZS1tYW5hZ2VyIiwiaXNzIjoiU29mdHdhcmVBRyIsIm51bURheXMiOiI5MCIsImlkIjoic2Fnc3RzQHNvZnR3YXJlYWcuY29tIiwibGFiZWwiOiJUb21hc1Rva2VuMiIsImV4cCI6MTcxMDI2MDkxN30.qXGI00i7-0mvbcLhAImgs-hJCu8ObvYsYxXg3WyqyUvt84KqTtJRsHV5E6Zhhv69kXhfM2JH0EKc1ct3NOpQsc5RogDungx8dDlv7VK_JaiwvAY7WcR10bRVFleRZCFWDG5svnxRlRgdtaewJGb3njoT2b3OotQ55go3pWSao5Ejv0sSt2NOpgOd35dpvdGGpJA07LHEx_TAum0_r9AzkZ11QSgLW2nLynPqs-um0TZWq4HD3UL9xX88AqWC_-UIW4o56BEoZ9QusxaBp5kywP8Rs0pFcagjUYKS30yM5Tz3akBtw5OLrT0la6CI3r0sM4I8u_ypParNYfNetV-tcA")
 
 							/* Push the container to the custom Registry */
 							customImage.push()
