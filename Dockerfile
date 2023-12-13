@@ -10,5 +10,6 @@ RUN  chmod +x /opt/softwareag/wpm/bin/wpm.sh
 ENV PATH=/opt/softwareag/wpm/bin:$PATH
 
 RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j ${WPM_CRED} WmJDBCAdapter
+RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j ${WPM_CRED} WmSAP
 
 WORKDIR /
