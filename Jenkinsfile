@@ -55,7 +55,7 @@ spec:
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
 		CONTAINER = "demo-edge-runtime"
 		CONTAINER_TAG = "1.0.${env.BUILD_NUMBER}"
-		BASEIMAGE = "sagcr.azurecr.io/webmethods-edge-runtime:11"
+		BASEIMAGE = "sagcr.azurecr.io/webmethods-edge-runtime:11.0"
     }
 
     stages {
