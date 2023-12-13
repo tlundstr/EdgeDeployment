@@ -54,7 +54,6 @@ spec:
 
 	environment {
 		PACKAGE = "*"
-		WPM = "WPM"
 		NAMESPACE = "edge-deployment"
 		REGISTRY_INGRESS = "https://${params.REGISTRY}"
 		CONTAINER = "demo-edge-runtime"
