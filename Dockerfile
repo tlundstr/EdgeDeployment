@@ -14,6 +14,6 @@ ENV PATH=/opt/softwareag/wpm/bin:$PATH
 
 RUN /opt/softwareag/wpm/bin/wpm.sh install -ws https://packages.softwareag.com -wr softwareag -d /opt/softwareag/IntegrationServer -j ${WPM_CRED} WmJDBCAdapter
 
-RUN /opt/softwareag/wpm/bin/wpm.sh install -u ${GITHUB_CREDS_USR} -p ${GITHUB_CREDS_PWS} -d /opt/softwareag/IntegrationServer -r https://github.com/tsvens TSUtils
+RUN /opt/softwareag/wpm/bin/wpm.sh install -u ${GITHUB_CREDS_USR} -p ${GITHUB_CREDS_PSW} -d /opt/softwareag/IntegrationServer -r https://github.com/tsvens TSUtils
 
 WORKDIR /
