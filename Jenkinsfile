@@ -45,6 +45,7 @@ spec:
 	parameters{
 		string(name: 'REGISTRY', defaultValue: 'registry.localhost', description: 'Endpoint of the docker registry')
 		string(name: 'HOST', defaultValue: 'edge.localhost', description: 'Base hostname of your cloud machine for the ingress')
+        string(name: 'BASEIMAGE', defaultValue: 'sagcr.azurecr.io/webmethods-edge-runtime:10.16.5', description: 'Base image for the build')
 	}
 
 	environment {

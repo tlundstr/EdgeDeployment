@@ -1,4 +1,4 @@
-FROM sagcr.azurecr.io/webmethods-edge-runtime:10.16.5
+FROM ${BASEIMAGE}
 
 MAINTAINER SoftwareAG
 
