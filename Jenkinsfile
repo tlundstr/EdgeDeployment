@@ -86,7 +86,7 @@ spec:
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
-							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg WPM=${WPM}")
+							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --build-arg PACKAGE=${PACKAGE} --build-arg BASEIMAGE=${BASEIMAGE} --build-arg WPM=${WPM}")
 
 							/* Push the container to the custom Registry */
 							customImage.push()
