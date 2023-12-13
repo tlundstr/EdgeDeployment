@@ -4,7 +4,7 @@ FROM sagcr.azurecr.io/webmethods-edge-runtime:${EDGE_VERSION}
 
 ARG WPM_CRED
 ARG GITHUB_CREDS_USR
-ARG GITHUB_CREDS_PWS
+ARG GITHUB_CREDS_PSW
 
 WORKDIR /opt/softwareag/wpm
 
