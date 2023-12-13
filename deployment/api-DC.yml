@@ -52,26 +52,11 @@ spec:
               memory: 1Gi
             requests:
               memory: 512Mi
-          volumeMounts:
-            - name: config-volume
-              mountPath: /opt/swagmsr/config
-            - name: license-file
-              mountPath: /opt/softwareag/IntegrationServer/config/licenseKey.xml
-              subPath: ISLicense.xml
           env:
-            - name: "SAG_IS_CONFIG_PROPERTIES"
-              value: "/opt/swagmsr/config/application.properties"
             - name: SAG_IS_CLOUD_REGISTER_URL
               value: https://wmintanywhere.int-aw-au.webmethods.io
             - name: SAG_IS_EDGE_CLOUD_ALIAS
               value: EdgeRuntime_SE_TS_Edge
             - name: SAG_IS_CLOUD_REGISTER_TOKEN
               value: 8bc81296e10741a39ee87143a053cbb8cc2bd036aefd430487af21c882da7898
-      volumes:
-        - name: config-volume
-          configMap:
-            name: application-properties-is
-        - name: license-file
-          configMap:
-            name: msr-license
   replicas: 1
