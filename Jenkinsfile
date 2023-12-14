@@ -106,13 +106,13 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
+				if (env.PUSHTOREGISTRY == true ){
+								/* Alter the CONTAINER VARIABLE */
+								env.CONTAINER = env.REGISTRY+"/"+env.CONTAINER
+				}
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						if (env.PUSHTOREGISTRY == true ){
-								/* Alter the CONTAINER VARIABLE */
-								env.CONTAINER = env.REGISTRY+"/"+env.CONTAINER
-						}
 						cat deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 						script {
 							try {
