@@ -114,7 +114,7 @@ spec:
 						container(name: 'dind', shell: '/bin/sh') {
 							withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 								sh '''#!/bin/sh
-								cat deployment/api-DC.yml | sed --expression='s|${IMAGENAME}|'$IMAGENAMEREGISTRY'|g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								cat deployment/api-DC.yml | sed --expression='s|${IMAGENAME}|'$IMAGENAMEREGISTRY'|g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | kubectl apply -f -'''
 								script {
 									try {
 										sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
@@ -130,7 +130,7 @@ spec:
 						container(name: 'dind', shell: '/bin/sh') {
 							withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 								sh '''#!/bin/sh
-								cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMELOCAL'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								cat deployment/api-DC.yml | sed --expression='s|${IMAGENAME}|'$IMAGENAMELOCAL'|g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | kubectl apply -f -'''
 								script {
 									try {
 										sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
