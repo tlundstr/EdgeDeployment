@@ -108,6 +108,7 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
+				script{
 				echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
 				if( params.PUSHTOREGISTRY.toBoolean()){
 					container(name: 'dind', shell: '/bin/sh') {
@@ -142,6 +143,7 @@ spec:
 					}
 				}
             }
+			}
 		}
     }
 }
