@@ -94,8 +94,10 @@ spec:
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
+							echo "PUSHTOREGISTRY = ${params.PUSHTOREGISTRY}"
 							if( params.PUSHTOREGISTRY == "true"){
 								/* Push the container to the custom Registry */
+								echo "PUSH IMAGE"
 								customImage.push()
 								script{
 									ENV.CONTAINER = ENV.REGISTRY+"/"+ENV.CONTAINER
