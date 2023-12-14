@@ -94,9 +94,10 @@ spec:
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
-
-							/* Push the container to the custom Registry */
-							/*customImage.push()*/
+							if (env.PUSHTOREGISTRY = true ){
+								/* Push the container to the custom Registry */
+								customImage.push()
+							}
 						}
 					}
 				}
@@ -108,6 +109,10 @@ spec:
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
+						if (env.PUSHTOREGISTRY = true ){
+								/* Alter the CONTAINER VARIABLE */
+								env.CONTAINER = env.REGISTRY+"/"+env.CONTAINER
+						}
 						cat deployment/api-DC.yml | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 						script {
 							try {
