@@ -8,6 +8,7 @@ data:
   SAG_IS_CLOUD_REGISTER_TOKEN: 8bc81296e10741a39ee87143a053cbb8cc2bd036aefd430487af21c882da7898
   SAG_IS_CLOUD_REGISTER_URL: https://wmintanywhere.int-aw-au.webmethods.io
   SAG_IS_EDGE_CLOUD_ALIAS: EdgeRuntime_SE_TS_Edge
+  SAG_IS_HEALTH_ENDPOINT_ACL: Anonymous
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -66,4 +67,14 @@ spec:
             - configMapRef:
                 name: demo-edge-runtime
                 optional: false
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health/readiness
+              port: 5555
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 20      
   replicas: 1
