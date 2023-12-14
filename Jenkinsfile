@@ -100,7 +100,7 @@ spec:
 								customImage.push()
 								echo "before env.IMAGENAME = ${env.IMAGENAME}"
 								script{
-									 env.IMAGENAME = "${params.REGISTRY}/${env.CONTAINER}"
+									 env.IMAGENAME = params.REGISTRY}+"/"+${env.CONTAINER}
 								}
 								echo "after env.IMAGENAME = ${env.IMAGENAME}"
 							}
