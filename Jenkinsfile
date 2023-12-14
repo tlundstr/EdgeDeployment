@@ -62,7 +62,6 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
-		TMPCONTAINERNAME = "${params.CONTAINER}"
     }
 
     stages {
@@ -95,15 +94,13 @@ spec:
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
-							echo "PUSHTOREGISTRY = ${params.PUSHTOREGISTRY}"
 							if( params.PUSHTOREGISTRY.toBoolean()){
 								/* Push the container to the custom Registry */
-								echo "PUSH IMAGE"
 								customImage.push()
 								script{
-									 ENV.TMPCONTAINERNAME == params.REGISTRY+"/"+ENV.CONTAINER
+									 env.TMPCONTAINERNAME == params.REGISTRY+"/"+env.CONTAINER
 								}
-								echo "ENV.TMPCONTAINERNAME = ${ENV.TMPCONTAINERNAME}"
+								echo "env.TMPCONTAINERNAME = ${env.TMPCONTAINERNAME}"
 							}
 						}
 					}
