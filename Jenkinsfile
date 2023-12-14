@@ -104,7 +104,6 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
-				def TEMPCONTAINER = params.CONTAINER
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
