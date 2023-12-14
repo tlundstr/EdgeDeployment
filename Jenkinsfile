@@ -100,10 +100,10 @@ spec:
 								/* Push the container to the custom Registry */
 								customImage.push()
 								script{
-									 env.IMAGENAME = "${params.REGISTRY}/${env.CONTAINER}:${env.CONTAINER_TAG}"
+									 IMAGENAME2 = "${params.REGISTRY}/${env.CONTAINER}:${env.CONTAINER_TAG}"
 								}
 							}
-							echo "after IMAGENAME = ${env.IMAGENAME}"
+							echo "after IMAGENAME = ${IMAGENAME2},${env.IMAGENAME}"
 						}
 					}
 				}
@@ -112,14 +112,11 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
-				script{
-					 IMAGENAME = "${params.REGISTRY}/${env.CONTAINER}:${env.CONTAINER_TAG}"
-				}
-				echo "deploy IMAGENAME = ${IMAGENAME},${env.IMAGENAME} "
+				echo "deploy IMAGENAME = ${IMAGENAME2},${env.IMAGENAME} "
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAME'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+						cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAME2'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 						script {
 							try {
 								sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
