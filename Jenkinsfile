@@ -98,7 +98,7 @@ spec:
 								/* Push the container to the custom Registry */
 								customImage.push()
 								script{
-									 env.TMPCONTAINERNAME == params.REGISTRY+"/"+env.CONTAINER
+									 env.TMPCONTAINERNAME == "${params.REGISTRY}/${env.CONTAINER}"
 								}
 								echo "env.TMPCONTAINERNAME = ${env.TMPCONTAINERNAME}"
 							}
