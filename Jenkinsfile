@@ -113,12 +113,7 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
-				if( params.PUSHTOREGISTRY.toBoolean()){
-					script{
-						 env.IMAGENAME = "${params.REGISTRY}/${env.CONTAINER}:${env.CONTAINER_TAG}"
-					}
-					echo "after env.IMAGENAME = ${env.IMAGENAME}"
-				}
+				echo "deploy env.IMAGENAME = ${env.IMAGENAME}"
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
