@@ -125,8 +125,7 @@ spec:
 						}
 					}
 				} else {
-				echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
-				if( params.PUSHTOREGISTRY.toBoolean()){
+					echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
 					container(name: 'dind', shell: '/bin/sh') {
 						withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 							sh '''#!/bin/sh
