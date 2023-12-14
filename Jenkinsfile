@@ -62,7 +62,7 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
-		TMPCONTAINERNAME = params.CONTAINER
+		TMPCONTAINERNAME = "${params.CONTAINER}"
     }
 
     stages {
