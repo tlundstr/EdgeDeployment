@@ -62,7 +62,7 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
-		IMAGENAMEREGISTRY = "${params.REGISTRY}//${env.CONTAINER}:${env.CONTAINER_TAG}"
+		IMAGENAMEREGISTRY = "${params.REGISTRY}/${env.CONTAINER}:${env.CONTAINER_TAG}"
 		IMAGENAMELOCAL = "${env.CONTAINER}:${env.CONTAINER_TAG}"
     }
 
@@ -114,7 +114,7 @@ spec:
 						container(name: 'dind', shell: '/bin/sh') {
 							withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 								sh '''#!/bin/sh
-								cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMEREGISTRY'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								cat deployment/api-DC.yml | sed --expression='s|${IMAGENAME}|'$IMAGENAMEREGISTRY'|g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 								script {
 									try {
 										sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
