@@ -119,7 +119,7 @@ spec:
 					}
 					echo "after env.IMAGENAME = ${env.IMAGENAME}"
 				}
-				container(name: 'dind'shell: '/bin/sh') {
+				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
 						cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$env.IMAGENAME'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
