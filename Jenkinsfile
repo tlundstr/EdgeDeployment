@@ -62,6 +62,7 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
+		IMAGENAME == "${env.CONTAINER}"
     }
 
     stages {
@@ -97,10 +98,11 @@ spec:
 							if( params.PUSHTOREGISTRY.toBoolean()){
 								/* Push the container to the custom Registry */
 								customImage.push()
+								echo "before env.IMAGENAME = ${env.IMAGENAME}"
 								script{
-									 env.TMPCONTAINERNAME == "${params.REGISTRY}/${env.CONTAINER}"
+									 env.IMAGENAME == "${params.REGISTRY}/${env.CONTAINER}"
 								}
-								echo "env.TMPCONTAINERNAME = ${env.TMPCONTAINERNAME}"
+								echo "after env.IMAGENAME = ${env.IMAGENAME}"
 							}
 						}
 					}
