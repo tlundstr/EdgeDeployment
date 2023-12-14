@@ -109,39 +109,39 @@ spec:
 		stage('Deploy-Container'){
             steps {
 				script{
-				echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
-				if( params.PUSHTOREGISTRY.toBoolean()){
-					container(name: 'dind', shell: '/bin/sh') {
-						withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
-							sh '''#!/bin/sh
-							cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMEREGISTRY'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
-							script {
-								try {
-									sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
-								} catch (exc) {
-									echo 'Service does not exist yet'
-									sh '''cat deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
-								}
-							}
-						}
-					}
-				} else {
 					echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
-					container(name: 'dind', shell: '/bin/sh') {
-						withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
-							sh '''#!/bin/sh
-							cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMELOCAL'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
-							script {
-								try {
-									sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
-								} catch (exc) {
-									echo 'Service does not exist yet'
-									sh '''cat deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+					if( params.PUSHTOREGISTRY.toBoolean()){
+						container(name: 'dind', shell: '/bin/sh') {
+							withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
+								sh '''#!/bin/sh
+								cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMEREGISTRY'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								script {
+									try {
+										sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
+									} catch (exc) {
+										echo 'Service does not exist yet'
+										sh '''cat deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+									}
+								}
+							}
+						}
+					} else {
+						echo "deploy  ${env.IMAGENAMEREGISTRY},${env.IMAGENAMELOCAL} "
+						container(name: 'dind', shell: '/bin/sh') {
+							withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
+								sh '''#!/bin/sh
+								cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$IMAGENAMELOCAL'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+								script {
+									try {
+										sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
+									} catch (exc) {
+										echo 'Service does not exist yet'
+										sh '''cat deployment/service-route.yml | sed --expression='s/${HOST}/'$HOST'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+									}
 								}
 							}
 						}
 					}
-				}
 				}
 			}
 		}
