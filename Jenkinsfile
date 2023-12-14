@@ -94,10 +94,8 @@ spec:
 						docker.withRegistry("${REGISTRY_INGRESS}") {
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
-							if (params.PUSHTOREGISTRY == true ){
-								/* Push the container to the custom Registry */
-								customImage.push()
-							}
+							/* Push the container to the custom Registry */
+							/* customImage.push() */
 						}
 					}
 				}
@@ -107,10 +105,6 @@ spec:
 		stage('Deploy-Container'){
             steps {
 				def TEMPCONTAINER = params.CONTAINER
-				if (params.PUSHTOREGISTRY == true ){
-								/* Alter the CONTAINER VARIABLE */
-								TEMPCONTAINER = params.REGISTRY+"/"+params.CONTAINER
-				}
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
