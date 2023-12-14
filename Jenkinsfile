@@ -95,14 +95,14 @@ spec:
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
 							script{
-								env.IMAGENAME = params.REGISTRY}+"/"+${env.CONTAINER}
+								env.IMAGENAME = "${env.CONTAINER}"
 							}
 							if( params.PUSHTOREGISTRY.toBoolean()){
 								/* Push the container to the custom Registry */
 								customImage.push()
 								echo "before env.IMAGENAME = ${env.IMAGENAME}"
 								script{
-									 env.IMAGENAME = params.REGISTRY}+"/"+${env.CONTAINER}
+									 env.IMAGENAME = "params.REGISTRY}/${env.CONTAINER}"
 								}
 								echo "after env.IMAGENAME = ${env.IMAGENAME}"
 							}
