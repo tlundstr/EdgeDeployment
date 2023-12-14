@@ -95,15 +95,15 @@ spec:
 					
 							def customImage = docker.build("${CONTAINER}:${CONTAINER_TAG}", "${PACKAGE}/build/container --no-cache --build-arg EDGE_VERSION=${EDGE_VERSION} --build-arg WPM_CRED=${WPM_CRED} --build-arg GITHUB_CREDS_USR=${GITHUB_CREDS_USR} --build-arg GITHUB_CREDS_PSW=${GITHUB_CREDS_PSW}")
 							script{
-								env.IMAGENAME = "${env.CONTAINER}"
+								IMAGENAME = "${env.CONTAINER}"
 							}
 							if( params.PUSHTOREGISTRY.toBoolean()){
 								/* Push the container to the custom Registry */
 								customImage.push()
 								script{
-									 env.IMAGENAME = "${params.REGISTRY}//${env.CONTAINER}:${env.CONTAINER_TAG}"
+									 IMAGENAME = "${params.REGISTRY}//${env.CONTAINER}:${env.CONTAINER_TAG}"
 								}
-								echo "after env.IMAGENAME = ${env.IMAGENAME}"
+								echo "after IMAGENAME = ${env.IMAGENAME}"
 							}
 						}
 					}
@@ -113,7 +113,7 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
-				echo "deploy env.IMAGENAME = ${env.IMAGENAME}"
+				echo "deploy IMAGENAME = ${IMAGENAME}"
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
