@@ -62,7 +62,7 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
-		IMAGENAME == "${env.CONTAINER}"
+		IMAGENAME = "${env.CONTAINER}"
     }
 
     stages {
@@ -100,7 +100,7 @@ spec:
 								customImage.push()
 								echo "before env.IMAGENAME = ${env.IMAGENAME}"
 								script{
-									 env.IMAGENAME == "${params.REGISTRY}/${env.CONTAINER}"
+									 env.IMAGENAME = "${params.REGISTRY}/${env.CONTAINER}"
 								}
 								echo "after env.IMAGENAME = ${env.IMAGENAME}"
 							}
