@@ -62,6 +62,7 @@ spec:
 		EDGE_VERSION = "${params.EDGE_VERSION}"
 		GITHUB_CREDS = credentials('GITHUB_CREDENTIALS')
 		WPM_CRED = credentials('WPM_CREDENTIALS')
+		TMPCONTAINERNAME = params.CONTAINER
     }
 
     stages {
@@ -88,7 +89,7 @@ spec:
             steps {
 				container(name: 'dind', shell: '/bin/sh') {
 					sh '''#!/bin/sh
-            			cd ${PACKAGE}
+            	cd ${PACKAGE}
             		'''
 					script {
 						docker.withRegistry("${REGISTRY_INGRESS}") {
@@ -100,8 +101,9 @@ spec:
 								echo "PUSH IMAGE"
 								customImage.push()
 								script{
-									ENV.CONTAINER = ENV.REGISTRY+"/"+ENV.CONTAINER
+									 ENV.TMPCONTAINERNAME == params.REGISTRY+"/"+ENV.CONTAINER
 								}
+								echo "ENV.TMPCONTAINERNAME = ${ENV.TMPCONTAINERNAME}"
 							}
 						}
 					}
