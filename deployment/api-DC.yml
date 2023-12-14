@@ -9,7 +9,7 @@ data:
   SAG_IS_CLOUD_REGISTER_URL: https://wmintanywhere.int-aw-au.webmethods.io
   SAG_IS_EDGE_CLOUD_ALIAS: EdgeRuntime_SE_TS_Edge
   SAG_IS_HEALTH_ENDPOINT_ACL: Anonymous
-  SAG_IS_CLOUD_ALLOWSYNC: false
+  SAG_IS_CLOUD_ALLOWSYNC: "false"
 ---
 apiVersion: v1
 kind: ConfigMap
