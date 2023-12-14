@@ -113,7 +113,9 @@ spec:
 		
 		stage('Deploy-Container'){
             steps {
+				script{
 				echo "in DEPLOY CONTAINER env.IMAGENAME = ${env.IMAGENAME}"
+				}
 				container(name: 'dind'shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
