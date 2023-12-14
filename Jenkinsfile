@@ -117,7 +117,7 @@ spec:
 				container(name: 'dind', shell: '/bin/sh') {
 					withKubeConfig([credentialsId: 'jenkins-agent-account', serverUrl: 'https://kubernetes.default']) {
 						sh '''#!/bin/sh
-						cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'$env.IMAGENAME'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
+						cat deployment/api-DC.yml | sed --expression='s/${IMAGENAME}/'registry.localhost/demo-edge-runtime:1.0.46'/g' | sed --expression='s/${CONTAINER}/'$CONTAINER'/g' | sed --expression='s/${REGISTRY}/'$REGISTRY'/g' | sed --expression='s/${CONTAINER_TAG}/'$CONTAINER_TAG'/g' | sed --expression='s/${NAMESPACE}/'$NAMESPACE'/g' | kubectl apply -f -'''
 						script {
 							try {
 								sh 'kubectl -n ${NAMESPACE} get service ${CONTAINER}-service'
