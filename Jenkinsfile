@@ -79,8 +79,8 @@ spec:
 					}'''
 					def props = readJSON text: oldJson
 					def keyList = props['branch'].keySet()
-					echo "${keyList}"
-					// println(props['branch'].keySet())
+					//echo "${keyList}"
+					println(props['branch'].keySet())
 
 				}
 			}
