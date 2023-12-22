@@ -11,10 +11,12 @@
     },
     {
         "engine_name": "EdgeRuntime_SE_tlundstr_demo2",
+		"container_name":"edge-deployment",
         "cloud_url": "https://wmintanywhere.int-aw-au.webmethods.io",
         "registration_token": "d7e4d4a52bd64bdca3d0249f275589fbeb93727097e94702a37f7cf94d290d5d",
         "image_name": "sagcr.azurecr.io/webmethods-edge-runtime:11.0",
-        "dockerfile": "Dockerfile"
-		"instances":"2"
+		"project_name":"project",
+        "dockerfile": "Dockerfile",
+		"replicas":"2"
     }]
 }
