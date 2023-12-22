@@ -68,6 +68,15 @@ spec:
 
     stages {
 
+		stage('JsonParse'){
+            steps {
+					def props = readJSON text: '{ "key": null, "a": "b" }', returnPojo: true
+					assert props['key'] == null
+					props.each { key, value ->
+						echo "Walked through key $key and value $value"
+					}
+			}
+		}
 		stage('Prepare'){
             steps {
 				dir("${PACKAGE}") {
