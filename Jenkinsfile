@@ -79,9 +79,9 @@ spec:
 					}'''
 					//def props = readJSON text: oldJson
 					def props = readJSON file: './Deployment.json'
-					def keyList = props['branch'].keySet()
-					//echo "${keyList}"
-					println(props['branch'].keySet())
+					def keyList = props['engines'].keySet()
+					echo "${keyList}"
+					//println(props['branch'].keySet())
 
 				}
 			}
