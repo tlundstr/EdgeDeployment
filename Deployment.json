@@ -1,5 +1,5 @@
 {
-    "engines": [{
+    "engines": ["deployment1":{
         "engine_name": "EdgeRuntime_SE_tlundstr_demo2",
 		"container_name":"edge-deployment",
         "cloud_url": "https://wmintanywhere.int-aw-au.webmethods.io",
@@ -9,7 +9,7 @@
         "dockerfile": "Dockerfile",
 		"replicas":"2"
     },
-    {
+    "deployment2":{
         "engine_name": "EdgeRuntime_SE_tlundstr_demo2",
 		"container_name":"edge-deployment",
         "cloud_url": "https://wmintanywhere.int-aw-au.webmethods.io",
