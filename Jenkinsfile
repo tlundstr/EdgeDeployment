@@ -81,7 +81,7 @@ spec:
 					def props = readJSON file: './Deployment.json'
 					def keyList = props['engines'].keySet()
 					echo "${keyList}"
-					def keyList2 = props[keyList[0]].values().keySet()
+					def keyList2 = props['engines'][keyList[0]].keySet()
 					echo "${keyList2}"
 					//println(props['branch'].keySet())
 
